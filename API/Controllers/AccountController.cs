@@ -38,7 +38,8 @@ public class AccountController(DataContext context) : BaseApiController
     [HttpPost("login")]
     public async Task<ActionResult<AppUser>> Login(LoginDTO loginDTO)
     {
-        var user = await context.Users.FirstOrDefaultAsync(x => x.UserName.ToLower() == loginDTO.Username.ToLower());
+        var user = await context.Users.FirstOrDefaultAsync(x => 
+        x.UserName.ToLower() == loginDTO.Username.ToLower());
 
         if(user == null)
         {
@@ -48,6 +49,7 @@ public class AccountController(DataContext context) : BaseApiController
 
             var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(loginDTO.Password));
 
+            
             for (int i = 0; i<computedHash.Length; i++)
             {
                 if(computedHash[i] != user.PasswordHash[i])
