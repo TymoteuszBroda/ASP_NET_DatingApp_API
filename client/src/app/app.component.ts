@@ -2,10 +2,11 @@ import { HttpClient } from '@angular/common/http';
 import { Component, inject, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Observable } from 'rxjs';
+import { NavComponent } from "./nav/nav.component";
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, NavComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })
@@ -23,3 +24,5 @@ export class AppComponent implements OnInit {
     });
   }
 }
+
+
