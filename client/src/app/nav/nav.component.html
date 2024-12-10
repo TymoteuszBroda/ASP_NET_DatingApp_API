@@ -13,13 +13,11 @@
       <li class="nav-item">
         <a class="nav-link">Messages</a>
       </li>
-            <li class="nav-item">
+      <li class="nav-item">
         <a class="nav-link" (click)="logout()">Logout</a>
       </li>
     </ul>
-  }
-
-  @if (loggedIn) {
+    } @if (loggedIn) {
     <div class="dropdown">
       <a class="dropdown-toggle text-light">Welcome user</a>
       <div class="dropdown-menu">
@@ -27,10 +25,13 @@
         <a class="dropdown-item" (click)="logout()">Logout</a>
       </div>
     </div>
-  }
-
-  @if (!loggedIn) {
-     <form #loginForm ="ngForm" (ngSubmit)="login()" class="d-flex" autocomplete="off">
+    } @if (!loggedIn) {
+    <form
+      #loginForm="ngForm"
+      (ngSubmit)="login()"
+      class="d-flex"
+      autocomplete="off"
+    >
       <input
         name="username"
         [(ngModel)]="model.username"
@@ -39,15 +40,14 @@
         placeholder="Username"
       />
       <input
-      name="password"
-      [(ngModel)]="model.password"
+        name="password"
+        [(ngModel)]="model.password"
         class="form-control me-2"
         type="password"
         placeholder="Password"
       />
       <button class="btn btn-outline-success" type="submit">Login</button>
     </form>
-  }
-
+    }
   </div>
 </nav>

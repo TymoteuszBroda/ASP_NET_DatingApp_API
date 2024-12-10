@@ -7,7 +7,7 @@ import { NgIf } from '@angular/common';
   selector: 'app-nav',
   imports: [FormsModule, NgIf],
   templateUrl: './nav.component.html',
-  styleUrl: './nav.component.css'
+  styleUrl: './nav.component.css',
 })
 export class NavComponent {
   private accountService = inject(AccountService);
@@ -15,24 +15,19 @@ export class NavComponent {
 
   model: any = {};
 
-  login()
-  {
+  login() {
     this.accountService.login(this.model).subscribe({
-      next: response=>{
+      next: (response) => {
         console.log(response);
         this.loggedIn = true;
       },
-      error: error=>
-      {
+      error: (error) => {
         console.log(error);
-      }
+      },
     });
   }
 
-  logout()
-  {
+  logout() {
     this.loggedIn = false;
-
   }
-
 }
