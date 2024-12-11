@@ -4,10 +4,11 @@ import { RouterOutlet } from '@angular/router';
 import { Observable } from 'rxjs';
 import { NavComponent } from './nav/nav.component';
 import { AccountService } from './_services/account.service';
+import { HomeComponent } from "./home/home.component";
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, NavComponent],
+  imports: [RouterOutlet, NavComponent, HomeComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })
