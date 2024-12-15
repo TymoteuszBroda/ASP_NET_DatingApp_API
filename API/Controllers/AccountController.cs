@@ -15,9 +15,9 @@ public class AccountController(DataContext context, ITokenService tokenService) 
 
 
     [HttpPost("register")]
-    public async Task<ActionResult<UserDTO>> Register( RegisterDTO registerDTO)
+    public async Task<ActionResult<UserDTO>> Register(RegisterDTO registerDTO)
     {
-        if(await UserExists(registerDTO.Username))
+        if (await UserExists(registerDTO.Username))
         {
             return BadRequest("Username is taken");
         }
@@ -43,32 +43,32 @@ public class AccountController(DataContext context, ITokenService tokenService) 
     [HttpPost("login")]
     public async Task<ActionResult<UserDTO>> Login(LoginDTO loginDTO)
     {
-        var user = await context.Users.FirstOrDefaultAsync(x => 
+        var user = await context.Users.FirstOrDefaultAsync(x =>
         x.UserName.ToLower() == loginDTO.Username.ToLower());
 
-        if(user == null)
+        if (user == null)
         {
             return Unauthorized("Invalid username");
         }
-            using var hmac = new HMACSHA512(user.PasswordSalt);
+        using var hmac = new HMACSHA512(user.PasswordSalt);
 
-            var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(loginDTO.Password));
+        var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(loginDTO.Password));
 
-            
-            for (int i = 0; i<computedHash.Length; i++)
+
+        for (int i = 0; i < computedHash.Length; i++)
+        {
+            if (computedHash[i] != user.PasswordHash[i])
             {
-                if(computedHash[i] != user.PasswordHash[i])
-                {
-                    return Unauthorized("Invalid password");
-                }
+                return Unauthorized("Invalid password");
             }
-
-            return new UserDTO
-            {
-                Username = user.UserName,
-                Token = tokenService.CreateToken(user)
-            };
         }
+
+        return new UserDTO
+        {
+            Username = user.UserName,
+            Token = tokenService.CreateToken(user)
+        };
+    }
 
     private async Task<bool> UserExists(string username)
     {
