@@ -24,8 +24,9 @@ export class MembersService {
   getHttpOptions()
   {
     return {
-      headers: new HttpHeaders,
+      headers: new HttpHeaders({
       Authorization: `Bearer ${this.accountService.currentUser()?.token}`
-    }
+      })
+    };
   }
 }
