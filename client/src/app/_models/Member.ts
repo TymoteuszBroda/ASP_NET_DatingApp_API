@@ -9,7 +9,7 @@ export interface Member {
   created: Date;
   lastActive: Date;
   gender: string;
-  intrduction: any;
+  introduction: any;
   lookingFor: string;
   city: string;
   country: string;
