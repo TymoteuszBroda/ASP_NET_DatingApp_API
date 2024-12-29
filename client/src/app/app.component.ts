@@ -12,6 +12,7 @@ import { NgxSpinnerComponent } from 'ngx-spinner';
   styleUrl: './app.component.css',
 })
 export class AppComponent implements OnInit {
+  [x: string]: any;
   private accountService = inject(AccountService);
 
   ngOnInit(): void {
