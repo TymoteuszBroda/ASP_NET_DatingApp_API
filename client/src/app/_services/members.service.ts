@@ -47,13 +47,22 @@ export class MembersService {
           {
             m.photoUrl = photo.url
           }
-          return m;  
+          return m;
         }))
       })
     );
   }
 
-  deletePhoto(photoId: number) {
-    return this.http.delete(this.baseUrl + 'users/delete-photo/' + photoId);
+  deletePhoto(photo: Photo) {
+    return this.http.delete(this.baseUrl + 'users/delete-photo/' + photo.id).pipe(
+      tap(() => {
+        this.members.update(members => members.map(m=>{
+          if(m.photos.includes(photo)) {
+            m.photos = m.photos.filter(x=>x.id !== photo.id)
+          }
+          return m;
+        }))
+      })
+    );
   }
 }
