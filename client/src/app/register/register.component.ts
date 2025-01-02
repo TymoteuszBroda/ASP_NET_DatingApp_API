@@ -1,11 +1,12 @@
 import { Component, inject, input, OnInit, output} from '@angular/core';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AccountService } from '../_services/account.service';
 import { ToastrService } from 'ngx-toastr';
+import { JsonPipe } from '@angular/common';
 
 @Component({
   selector: 'app-register',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, JsonPipe],
   templateUrl: './register.component.html',
   styleUrl: './register.component.css'
 })
@@ -22,24 +23,25 @@ ngOnInit(): void {
 
 initializeForm(){
   this.registerForm = new FormGroup({
-    username: new FormControl(),
-    password: new FormControl(),
-    confirmPassword: new FormControl()
+    username: new FormControl('Hello', Validators.required),
+    password: new FormControl('', [Validators.required, Validators.minLength(4), Validators.maxLength(8)]),
+    confirmPassword: new FormControl('', [Validators.required])
   })
 }
 
   register()
   {
-    this.accountService.register(this.model).subscribe({
-      next: response => {
-        console.log(response)
-        this.cancel();
-      },
-      error: error=>{
-        this.toaster.error(error.error)
-      }
+    console.log(this.registerForm.value);
+    // this.accountService.register(this.model).subscribe({
+    //   next: response => {
+    //     console.log(response)
+    //     this.cancel();
+    //   },
+    //   error: error=>{
+    //     this.toaster.error(error.error)
+    //   }
 
-    })
+    // })
   }
 
   cancel()
