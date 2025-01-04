@@ -16,7 +16,7 @@ import { Observable } from 'rxjs';
 })
 export class PhotoEditorComponent implements OnInit {
   private accountService = inject(AccountService);
-  private memberService = inject(MembersService)
+  private memberService = inject(MembersService);
   member = input.required<Member>();
 
   uploader?: FileUploader;
@@ -32,36 +32,35 @@ export class PhotoEditorComponent implements OnInit {
     this.hasBaseDropZoneOver = e;
   }
 
-  deletePhoto(photo:Photo)
-  {
+  deletePhoto(photo: Photo) {
     this.memberService.deletePhoto(photo).subscribe({
-      next: _ =>{
-        const updatedMember = {...this.member()};
-        updatedMember.photos = updatedMember.photos.filter(x=>x.id !== photo.id);
+      next: (_) => {
+        const updatedMember = { ...this.member() };
+        updatedMember.photos = updatedMember.photos.filter(
+          (x) => x.id !== photo.id
+        );
         this.memberChange.emit(updatedMember);
-      }
-    })
+      },
+    });
   }
 
-  setMainPhoto(photo: Photo)
-  {
+  setMainPhoto(photo: Photo) {
     this.memberService.setMainPhoto(photo).subscribe({
-      next: _ => {
+      next: (_) => {
         const user = this.accountService.currentUser();
-        if(user)
-        {
+        if (user) {
           user.PhotoUrl = photo.url;
           this.accountService.setCurrentUser(user);
         }
-        const updatedMember = {...this.member()}
+        const updatedMember = { ...this.member() };
         updatedMember.photoUrl = photo.url;
-        updatedMember.photos.forEach(p =>{
-          if(p.isMain) p.isMain = false;
-          if(p.id == photo.id) p.isMain = true;
+        updatedMember.photos.forEach((p) => {
+          if (p.isMain) p.isMain = false;
+          if (p.id == photo.id) p.isMain = true;
         });
         this.memberChange.emit(updatedMember);
-      }
-    })
+      },
+    });
   }
 
   initializeUploader() {
@@ -82,6 +81,19 @@ export class PhotoEditorComponent implements OnInit {
       const updatedMember = { ...this.member() };
       updatedMember.photos.push(photo);
       this.memberChange.emit(updatedMember);
+      if (photo.isMain) {
+        const user = this.accountService.currentUser();
+        if (user) {
+          user.PhotoUrl = photo.url;
+          this.accountService.setCurrentUser(user);
+        }
+        updatedMember.photoUrl = photo.url;
+        updatedMember.photos.forEach((p) => {
+          if (p.isMain) p.isMain = false;
+          if (p.id == photo.id) p.isMain = true;
+        });
+        this.memberChange.emit(updatedMember);
+      }
     };
   }
 }
